@@ -2,7 +2,6 @@
 #define JOGADOR 1
 #define TAMANHO_MAPA 3
 
-
 extern char mapa[TAMANHO_MAPA][TAMANHO_MAPA];
 
 void iniciaMapa();

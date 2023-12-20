@@ -23,7 +23,7 @@ int main(int argc, char const *argv[]){
         indicador = toupper(indicador);
 
         if(indicador != 'X' && indicador != 'O'){
-            printf("Valor incorreto!\n");
+            printf("Valor incorreto! Escolha X ou O.\n");
         }else if (indicador == 'X'){
             indicadorInimigo = 'O';
             indicadorValido = 1;
@@ -54,7 +54,7 @@ int main(int argc, char const *argv[]){
                 //Verifica
                 validaInput = posicaoVazia(X, Y, JOGADOR);
                                 
-            } else printf("Valor inválido!\nEscolha um valor de 1 a 3.\n");
+            } else printf("Valor inválido!\nEscolha um valor de 1 a %d.\n", TAMANHO_MAPA);
         }
         mapa[X][Y] = indicador;
         contadorDeJogadas++;
