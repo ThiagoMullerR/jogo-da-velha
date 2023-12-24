@@ -26,64 +26,33 @@ void imprimeMapa(){
 }
 
 int verificaSeGanhou(char indicador){
-    // Checar todas as linhas
+
+    int cDiagonalEsqDir = 0; int cDiagonalDirEsq = 0;
     for(int x = 0; x < TAMANHO_MAPA; x++){
-        int contaIndicador = 0;
+
+        int cLinhas = 0; int cColunas = 0;
         for(int y = 0; y < TAMANHO_MAPA; y++){
-            if(mapa[x][y] == indicador) contaIndicador++;
-            if(contaIndicador == TAMANHO_MAPA){
+
+            // Verifica Linhas e colunas
+            if(mapa[x][y] == indicador) cLinhas++;
+            if(mapa[y][x] == indicador) cColunas++;
+
+            //Verifica diagonais
+            if(x == y) if(mapa[x][y] == indicador) cDiagonalEsqDir++;
+            if(y == TAMANHO_MAPA - x - 1) if(mapa[x][y] == indicador) cDiagonalDirEsq++;
+
+            if(cLinhas == TAMANHO_MAPA || cColunas == TAMANHO_MAPA ||
+             cDiagonalEsqDir == TAMANHO_MAPA || cDiagonalDirEsq == TAMANHO_MAPA){
                 printf("%c é o vencedor!\n", indicador);
                 return 1;
             }
-        }
-    }
 
-    // Checar todas as colunas
-    for(int x = 0; x < TAMANHO_MAPA; x++){
-        int contaIndicador = 0;
-        for(int y = 0; y < TAMANHO_MAPA; y++){
-            if(mapa[y][x] == indicador) contaIndicador++;
-            if(contaIndicador == TAMANHO_MAPA){
-                printf("%c é o vencedor!\n", indicador);
-                return 1;
-            }
-        }
-    }
-
-    // Checar se houve diagonal ->
-    int cDiagonalEsqDir = 0;
-    for(int x = 0; x < TAMANHO_MAPA; x++){
-        for(int y = 0; y < TAMANHO_MAPA; y++){
-            if (x == y){
-                if(mapa[x][y] == indicador){
-                    cDiagonalEsqDir++;
-                    if (cDiagonalEsqDir == TAMANHO_MAPA){
-                        printf("%c é o vencedor!\n", indicador);
-                        return 1;
-                    }
-                }
-            }
-        }
-    }
-
-    // Checar se houve diagonal <-
-    int cDiagonalDirEsq = 0;
-    for (int x = 0; x < TAMANHO_MAPA; x++) {
-        for (int y = 0; y < TAMANHO_MAPA; y++) {
-            if (y == TAMANHO_MAPA - x - 1) {
-                if(mapa[x][y] == indicador){
-                    cDiagonalDirEsq++;
-                    if (cDiagonalDirEsq == TAMANHO_MAPA){
-                        printf("%c é o vencedor!\n", indicador);
-                        return 1;
-                    }
-                }
-            }
         }
     }
 
     //Não houve combinação
     return 0;
+
 }
 
 int posicaoVazia(int X, int Y, int vezDeQuem){

@@ -9,7 +9,8 @@ char mapa[TAMANHO_MAPA][TAMANHO_MAPA];
 
 int main(int argc, char const *argv[]){
 
-    char indicador, indicadorInimigo;
+    char indicador;
+    char indicadorInimigo;
     int contadorDeJogadas = 0; // Max 9.
     srand(time(NULL));
 
