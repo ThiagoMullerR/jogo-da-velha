@@ -12,13 +12,13 @@ int main(int argc, char const *argv[]){
     char indicador;
     char indicadorInimigo;
     int X, Y = 0;
-    int contadorDeJogadas = 0; // Max 9.
+    int contadorDeJogadas = 0;
     int jogadores = 0; // 1 (jogador x Computador) - 2 (Jogador x Jogador)
-    srand(time(NULL));
 
+    srand(time(NULL));
+    
     abertura();
 
-    //Escolha X ou O
     int indicadorValido = 0;
     while (indicadorValido != 1){
         printf("Você deseja jogar com X ou O? ");
@@ -52,7 +52,6 @@ int main(int argc, char const *argv[]){
 
     iniciaMapa();
     
-    
     int acabou = 0;
     while (acabou == 0){
         vezJogador(indicador);
@@ -75,7 +74,7 @@ int main(int argc, char const *argv[]){
             imprimeMapa();
         }
     }
-    
+
     printf("Fim de jogo!\n");
     EXIT_SUCCESS;
 }

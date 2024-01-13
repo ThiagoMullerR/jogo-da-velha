@@ -29,26 +29,57 @@ void iniciaMapa(){
     }
 }
 
-void imprimeMapa(){
+void imprimeMapa() {
     printf("\n");
-    for(int x = 0; x < TAMANHO_MAPA; x++){
-        for(int y = 0; y < TAMANHO_MAPA; y++){
-            printf("%c", mapa[x][y]);
-            if(y < TAMANHO_MAPA - 1) printf("|");
+
+    // Imprime a numeração das colunas
+    printf("   ");
+    for (int coluna = 1; coluna <= TAMANHO_MAPA; coluna++) printf("%-5d ", coluna);
+    printf("\n");
+
+    for (int x = 0; x < TAMANHO_MAPA; x++) {
+        for (int i = 1; i < 3; i++) {
+            // Imprime o número da linha na mesma linha que mapa[x][y]
+            if (i == 2) printf("%-1d", x + 1);
+            for (int y = 0; y < TAMANHO_MAPA; y++) {
+                if (y > 0) printf("|");
+
+                // Adiciona um espaço extra na primeira linha de cada bloco
+                if (i == 1 && y == 0) printf(" ");
+                if (i == 2) printf("  %c  ", mapa[x][y]);
+                else printf("     ");
+            }
+            printf("\n");
         }
-        if(x < TAMANHO_MAPA - 1){
+
+        if (x < TAMANHO_MAPA - 1) {
+            for (int i = 0; i < TAMANHO_MAPA; i++) {
+                if (i > 0) printf("|");
+                
+                // Adiciona um espaço antes dos tracejados apenas na primeira coluna
+                if (i == 0) printf(" ");
+                printf("_____");
+            }
             printf("\n");
-            for(int i = 0; i < TAMANHO_MAPA; i++) printf("_ ");
+
+        } else {
+            for (int i = 0; i < TAMANHO_MAPA; i++) {
+                if (i > 0) printf("|");
+                
+                // Adiciona um espaço antes dos tracejados apenas na primeira coluna
+                if (i == 0) printf(" ");
+                printf("     ");
+            }
             printf("\n");
+
         }
     }
-    printf("\n\n");
+    printf("\n");
 }
 
 void vezJogador(char indicador){
     printf("Vez do jogador %c!\n", indicador);
 
-    //Vez do jogador
     imprimeMapa();
     
     int X, Y = 0;
@@ -71,7 +102,6 @@ void vezJogador(char indicador){
 void vezComputador(char indicador){
     printf("Vez do jogador %c!\n", indicador);
 
-    //Vez do computador
     imprimeMapa();
     
     sleep(1);
