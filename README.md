@@ -28,14 +28,14 @@ Este é um jogo da velha implementado em linguagem C. Ele permite que dois jogad
 
 ## Diferencial
 
--  Em ```main.c```, no indicador macro ```TAMANHO_MAPA```, é possível alterar o tamanho ```3``` do mapa por ser uma matriz quadrada. Os algoritmos que imprimem o mapa e procuram por um ganhador foram criados para se adaptarem a qualquer tamanho de uma matriz quadrada.
+-  Neste jogo da velha é possível alterar o tamanho ```3``` do mapa por ser uma matriz quadrada. Os algoritmos que imprimem o mapa e procuram por um ganhador foram criados para se adaptarem a qualquer tamanho de uma matriz quadrada. Para alterar o tamanho do mapa é preciso criar um arquivo ```mapa.txt``` na mesma pasta do jogo e com o valor da matriz.
 
     Exemplo:
 
-    Em ```main.h```:
+    Em ```mapa.txt```:
 
     ```bash
-    #define TAMANHO_MAPA 6
+    6
     ```
 
     O mapa será uma matriz 6x6:
@@ -43,8 +43,7 @@ Este é um jogo da velha implementado em linguagem C. Ele permite que dois jogad
 
 ## Contribuindo
 
-- Sinta-se à vontade para contribuir com melhorias, novas funcionalidades ou correções de bugs. Basta abrir um pull request!
-- Se encontrou algum bug ou problema, abra uma issue e descreva-o detalhadamente.
+- Sinta-se à vontade para contribuir com melhorias, novas funcionalidades ou correções de bugs.
 
 ## Licença
 

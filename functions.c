@@ -18,55 +18,85 @@ void abertura(){
     printf("          ██  ██  ██      ██      ██   ██ ██   ██       \n");
     printf("           ████   ███████ ███████ ██   ██ ██   ██       \n");
     printf("                                                        \n");
-    printf(" Criado por ThiagoMullerR - github.com/ThiagoMullerR    \n");
+    printf("  Criado por ThiagoMullerR - github.com/ThiagoMullerR   \n\n");
 }
 
-void iniciaMapa(){
-    for(int x = 0; x < TAMANHO_MAPA; x++){
-        for(int y = 0; y < TAMANHO_MAPA; y++){
-            mapa[x][y] = ' ';
+void carregaMapa(MAPA* mapa){
+    int tamanhoMapa = 3;
+    FILE *arquivo;
+
+    arquivo = fopen("mapa.txt", "r");
+
+    if(arquivo == NULL){
+        tamanhoMapa = 3;
+        //printf("Arquivo nulo!\n");
+    } else {
+        fscanf(arquivo, "%d", &tamanhoMapa);
+        fclose(arquivo);
+
+        if (tamanhoMapa < 2 || tamanhoMapa > 50) tamanhoMapa = 3;
+        printf("\nMapa %dx%d carregado!\n", tamanhoMapa, tamanhoMapa);
+    }
+    mapa->linhas = tamanhoMapa; mapa->colunas = tamanhoMapa;
+
+    alocaMapa(mapa);
+    iniciaMapa(mapa);
+}
+
+void alocaMapa(MAPA* mapa){
+    mapa->matriz = malloc(sizeof(char*) * mapa->linhas);
+    for (int i = 0; i < mapa->linhas; i++){
+        mapa->matriz[i] = malloc(sizeof(char) * (mapa->colunas + 1));
+    }
+}
+
+void iniciaMapa(MAPA* mapa){
+    for(int x = 0; x < mapa->linhas; x++){
+        for(int y = 0; y < mapa->colunas; y++){
+            mapa->matriz[x][y] = ' ';
         }
     }
 }
 
-void imprimeMapa() {
+void finalizaMapa(MAPA* mapa){
+    for (int i = 0; i < mapa->linhas; i++){
+        free(mapa->matriz[i]);
+    }
+    free(mapa->matriz);
+}
+
+void imprimeMapa(MAPA* mapa){
     printf("\n");
 
     // Imprime a numeração das colunas
     printf("   ");
-    for (int coluna = 1; coluna <= TAMANHO_MAPA; coluna++) printf("%-5d ", coluna);
+    for (int coluna = 1; coluna <= mapa->colunas; coluna++) printf("%-5d ", coluna);
     printf("\n");
 
-    for (int x = 0; x < TAMANHO_MAPA; x++) {
+    for (int x = 0; x < mapa->linhas; x++) {
         for (int i = 1; i < 3; i++) {
-            // Imprime o número da linha na mesma linha que mapa[x][y]
+            // Imprime o número da linha
             if (i == 2) printf("%-1d", x + 1);
-            for (int y = 0; y < TAMANHO_MAPA; y++) {
+            for (int y = 0; y < mapa->colunas; y++) {
                 if (y > 0) printf("|");
-
-                // Adiciona um espaço extra na primeira linha de cada bloco
                 if (i == 1 && y == 0) printf(" ");
-                if (i == 2) printf("  %c  ", mapa[x][y]);
+                if (i == 2) printf("  %c  ", mapa->matriz[x][y]);
                 else printf("     ");
             }
             printf("\n");
         }
 
-        if (x < TAMANHO_MAPA - 1) {
-            for (int i = 0; i < TAMANHO_MAPA; i++) {
+        if (x < mapa->linhas - 1) {
+            for (int i = 0; i < mapa->colunas; i++) {
                 if (i > 0) printf("|");
-                
-                // Adiciona um espaço antes dos tracejados apenas na primeira coluna
                 if (i == 0) printf(" ");
                 printf("_____");
             }
             printf("\n");
 
         } else {
-            for (int i = 0; i < TAMANHO_MAPA; i++) {
+            for (int i = 0; i < mapa->colunas; i++) {
                 if (i > 0) printf("|");
-                
-                // Adiciona um espaço antes dos tracejados apenas na primeira coluna
                 if (i == 0) printf(" ");
                 printf("     ");
             }
@@ -77,10 +107,10 @@ void imprimeMapa() {
     printf("\n");
 }
 
-void vezJogador(char indicador){
+void vezJogador(MAPA* mapa, char indicador){
     printf("Vez do jogador %c!\n", indicador);
 
-    imprimeMapa();
+    imprimeMapa(mapa);
     
     int X, Y = 0;
     int validaInput = 0;
@@ -88,32 +118,31 @@ void vezJogador(char indicador){
         printf("Indique a linha e a coluna com um espaço entre os números: ");
         scanf("%d %d", &X, &Y);
 
-        if(X <= TAMANHO_MAPA && X >= 1 && Y <= TAMANHO_MAPA && Y >= 1){
-            X--;
-            Y--;
+        if(X <= mapa->linhas && X >= 1 && Y <= mapa->colunas && Y >= 1){
+            X--; Y--;
             //Verifica
-            validaInput = posicaoVazia(X, Y, JOGADOR);
+            validaInput = posicaoVazia(mapa, X, Y, JOGADOR);
                             
-        } else printf("Valor inválido!\nEscolha um valor de 1 a %d.\n", TAMANHO_MAPA);
+        } else printf("Valor inválido!\nEscolha um valor de 1 a %d.\n", mapa->linhas);
     }
-    mapa[X][Y] = indicador;
+    mapa->matriz[X][Y] = indicador;
 }
 
-void vezComputador(char indicador){
+void vezComputador(MAPA * mapa, char indicador){
     printf("Vez do jogador %c!\n", indicador);
 
-    imprimeMapa();
+    imprimeMapa(mapa);
     
     sleep(1);
 
     int X, Y = 0;
     int jogadaValidaPC = 0;
     while(jogadaValidaPC != 1){
-        X = rand() % TAMANHO_MAPA;
-        Y = rand() % TAMANHO_MAPA;
+        X = rand() % mapa->linhas;
+        Y = rand() % mapa->colunas;
 
-        if(posicaoVazia(X, Y, COMPUTADOR)){
-            mapa[X][Y] = indicador;
+        if(posicaoVazia(mapa, X, Y, COMPUTADOR)){
+            mapa-> matriz[X][Y] = indicador;
             jogadaValidaPC++;
             printf("O oponente %c jogou linha %d e coluna %d.\n", indicador, X + 1, Y + 1);
             
@@ -121,25 +150,25 @@ void vezComputador(char indicador){
     }
 }
 
-int verificaSeAcabou(char indicador, int contadorDeJogadas){
+int verificaSeAcabou(MAPA* mapa, char indicador, int contadorDeJogadas){
 
     // Verifica se alguém ganhou
     int cDiagonalEsqDir = 0; int cDiagonalDirEsq = 0;
-    for(int x = 0; x < TAMANHO_MAPA; x++){
+    for(int x = 0; x < mapa->linhas; x++){
 
         int cLinhas = 0; int cColunas = 0;
-        for(int y = 0; y < TAMANHO_MAPA; y++){
+        for(int y = 0; y < mapa->colunas; y++){
 
             // Verifica Linhas e colunas
-            if(mapa[x][y] == indicador) cLinhas++;
-            if(mapa[y][x] == indicador) cColunas++;
+            if(mapa->matriz[x][y] == indicador) cLinhas++;
+            if(mapa->matriz[y][x] == indicador) cColunas++;
 
             //Verifica diagonais
-            if(x == y) if(mapa[x][y] == indicador) cDiagonalEsqDir++;
-            if(y == TAMANHO_MAPA - x - 1) if(mapa[x][y] == indicador) cDiagonalDirEsq++;
+            if(x == y) if(mapa->matriz[x][y] == indicador) cDiagonalEsqDir++;
+            if(y == mapa->colunas - x - 1) if(mapa->matriz[x][y] == indicador) cDiagonalDirEsq++;
 
-            if(cLinhas == TAMANHO_MAPA || cColunas == TAMANHO_MAPA ||
-             cDiagonalEsqDir == TAMANHO_MAPA || cDiagonalDirEsq == TAMANHO_MAPA){
+            if(cLinhas == mapa->linhas || cColunas == mapa->colunas ||
+             cDiagonalEsqDir == mapa->linhas || cDiagonalDirEsq == mapa->colunas){
                 printf("%c é o vencedor!\n", indicador);
                 return 1;
             }
@@ -148,7 +177,7 @@ int verificaSeAcabou(char indicador, int contadorDeJogadas){
     }
 
     // Verifica se deu velha
-    if(contadorDeJogadas + 1 > TAMANHO_MAPA * TAMANHO_MAPA){
+    if(contadorDeJogadas + 1 > mapa->linhas * mapa->colunas){
         printf("Deu velha! O jogo empatou!\n");
         return 1;
     }
@@ -158,8 +187,8 @@ int verificaSeAcabou(char indicador, int contadorDeJogadas){
 
 }
 
-int posicaoVazia(int X, int Y, int vezDeQuem){
-    if(mapa[X][Y] != ' '){
+int posicaoVazia(MAPA* mapa, int X, int Y, int vezDeQuem){
+    if(mapa->matriz[X][Y] != ' '){
         if (vezDeQuem == JOGADOR) printf("Posição em uso! Escolha outra posição.\n");
         return 0;
     } else return 1;

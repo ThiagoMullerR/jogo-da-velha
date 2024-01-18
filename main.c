@@ -5,7 +5,7 @@
 #include "main.h"
 
 
-char mapa[TAMANHO_MAPA][TAMANHO_MAPA];
+MAPA mapa;
 
 int main(int argc, char const *argv[]){
 
@@ -15,8 +15,9 @@ int main(int argc, char const *argv[]){
     int contadorDeJogadas = 0;
     int jogadores = 0; // 1 (jogador x Computador) - 2 (Jogador x Jogador)
 
-    srand(time(NULL));
-    
+    srand(time(0));
+
+    carregaMapa(&mapa);
     abertura();
 
     int indicadorValido = 0;
@@ -38,7 +39,6 @@ int main(int argc, char const *argv[]){
     
     printf("O oponente será %c!\n", indicadorInimigo);
 
-
     printf("Você vai jogar contra o computador ou contra outro jogador?\n(1) Computador\n(2) Jogador\n");
     int jogadorValido = 0;
     while(jogadorValido != 1){
@@ -49,32 +49,30 @@ int main(int argc, char const *argv[]){
             jogadorValido = 1;
         }
     }
-
-    iniciaMapa();
     
     int acabou = 0;
     while (acabou == 0){
-        vezJogador(indicador);
+        vezJogador(&mapa, indicador);
         contadorDeJogadas++;
-        acabou = verificaSeAcabou(indicador, contadorDeJogadas);
-        imprimeMapa();
+        acabou = verificaSeAcabou(&mapa, indicador, contadorDeJogadas);
+        imprimeMapa(&mapa);
         if(acabou) break;
 
-
         if(jogadores == 1){
-            vezComputador(indicadorInimigo);
+            vezComputador(&mapa, indicadorInimigo);
             contadorDeJogadas++;
-            acabou = verificaSeAcabou(indicadorInimigo, contadorDeJogadas);
-            imprimeMapa();
+            acabou = verificaSeAcabou(&mapa, indicadorInimigo, contadorDeJogadas);
+            imprimeMapa(&mapa);
 
         } else if (jogadores == 2) {
-            vezJogador(indicadorInimigo);
+            vezJogador(&mapa, indicadorInimigo);
             contadorDeJogadas++;
-            acabou = verificaSeAcabou(indicadorInimigo, contadorDeJogadas);
-            imprimeMapa();
+            acabou = verificaSeAcabou(&mapa, indicadorInimigo, contadorDeJogadas);
+            imprimeMapa(&mapa);
         }
     }
 
     printf("Fim de jogo!\n");
+    finalizaMapa(&mapa);
     EXIT_SUCCESS;
 }
