@@ -129,7 +129,7 @@ void vezJogador(MAPA* mapa, char indicador){
     mapa->matriz[X][Y] = indicador;
 }
 
-void vezComputador(MAPA * mapa, char indicador){
+void vezComputador(MAPA* mapa, char indicador){
     printf("Vez do jogador %c!\n", indicador);
 
     imprimeMapa(mapa);
