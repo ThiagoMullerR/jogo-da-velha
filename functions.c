@@ -27,16 +27,14 @@ void carregaMapa(MAPA* mapa){
 
     arquivo = fopen("mapa.txt", "r");
 
-    if(arquivo == NULL){
-        tamanhoMapa = 3;
-        //printf("Arquivo nulo!\n");
-    } else {
+    if(arquivo != NULL){
         fscanf(arquivo, "%d", &tamanhoMapa);
         fclose(arquivo);
 
         if (tamanhoMapa < 2 || tamanhoMapa > 50) tamanhoMapa = 3;
         printf("\nMapa %dx%d carregado!\n", tamanhoMapa, tamanhoMapa);
     }
+
     mapa->linhas = tamanhoMapa; mapa->colunas = tamanhoMapa;
 
     alocaMapa(mapa);
@@ -80,7 +78,10 @@ void imprimeMapa(MAPA* mapa){
             for (int y = 0; y < mapa->colunas; y++) {
                 if (y > 0) printf("|");
                 if (i == 1 && y == 0) printf(" ");
-                if (i == 2) printf("  %c  ", mapa->matriz[x][y]);
+                if (i == 2){
+                    if(y == 0 && x > 8) printf(" %c  ", mapa->matriz[x][y]);
+                    else printf("  %c  ", mapa->matriz[x][y]);
+                }
                 else printf("     ");
             }
             printf("\n");

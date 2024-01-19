@@ -51,7 +51,7 @@ int main(int argc, char const *argv[]){
     }
     
     int acabou = 0;
-    while (acabou == 0){
+    do {
         vezJogador(&mapa, indicador);
         contadorDeJogadas++;
         acabou = verificaSeAcabou(&mapa, indicador, contadorDeJogadas);
@@ -70,7 +70,7 @@ int main(int argc, char const *argv[]){
             acabou = verificaSeAcabou(&mapa, indicadorInimigo, contadorDeJogadas);
             imprimeMapa(&mapa);
         }
-    }
+    } while (acabou == 0);
 
     printf("Fim de jogo!\n");
     finalizaMapa(&mapa);
