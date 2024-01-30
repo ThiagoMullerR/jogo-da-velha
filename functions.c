@@ -115,7 +115,7 @@ void vezJogador(MAPA* mapa, char indicador){
     
     int X, Y = 0;
     int validaInput = 0;
-    while(validaInput != 1){
+    while(!validaInput){
         printf("Indique a linha e a coluna com um espaço entre os números: ");
         scanf("%d %d", &X, &Y);
 
@@ -138,7 +138,7 @@ void vezComputador(MAPA* mapa, char indicador){
 
     int X, Y = 0;
     int jogadaValidaPC = 0;
-    while(jogadaValidaPC != 1){
+    while(!jogadaValidaPC){
         X = rand() % mapa->linhas;
         Y = rand() % mapa->colunas;
 

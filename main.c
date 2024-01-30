@@ -21,7 +21,7 @@ int main(int argc, char const *argv[]){
     abertura();
 
     int indicadorValido = 0;
-    while (indicadorValido != 1){
+    while (!indicadorValido){
         printf("Você deseja jogar com X ou O? ");
         scanf(" %c", &indicador);
         indicador = toupper(indicador);
@@ -41,7 +41,7 @@ int main(int argc, char const *argv[]){
 
     printf("Você vai jogar contra o computador ou contra outro jogador?\n(1) Computador\n(2) Jogador\n");
     int jogadorValido = 0;
-    while(jogadorValido != 1){
+    while(!jogadorValido){
         scanf("%d", &jogadores);
         if(jogadores != 1 && jogadores != 2){
             printf("Valor incorreto. Escolha 1 Para Computador ou 2 para Jogador.\n");
